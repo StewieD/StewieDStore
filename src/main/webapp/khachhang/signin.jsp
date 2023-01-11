@@ -61,7 +61,7 @@ color: red;
 			</div>
 			<button class="w-100 btn btn-lg btn-outline-dark" type="submit">Sign
 				in</button>
-				New to Account? <a href="register.jsp" style="color:black;" >Create an account</a>
+				New to Account? <a href="<%=href%>/khachhang/register.jsp" style="color:black;" >Create an account</a>
 			<p class="mt-3 mb-1 text-muted">&copy; 2017–2022</p>
 		</form>
 	</main>

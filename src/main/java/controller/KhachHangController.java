@@ -86,7 +86,7 @@ public class KhachHangController extends HttpServlet {
 		String thongbao = "";
 		KhachHang khachHang1 = KhachHangDAO.getInstance().selectByUserName(kh1);
 		KhachHang khachHang2 = KhachHangDAO.getInstance().selectByIdAndPassWord(kh2);
-		if (khachHang1 != null && khachHang1.isTrangthaixacthuc()) {
+		if (khachHang1 != null && khachHang1.isTrangThaiXacThuc()) {
 			if (khachHang2 != null) {
 				HttpSession session = request.getSession();
 				session.setAttribute("khachHang", khachHang2);
@@ -311,9 +311,9 @@ public class KhachHangController extends HttpServlet {
 
 				boolean trangThaiXacThuc = false;
 
-				kh.setMaxacthuc(maXacThuc);
-				kh.setThoigianxacthuc(thoiGianXacThuc);
-				kh.setTrangthaixacthuc(trangThaiXacThuc);
+				kh.setMaXacThuc(maXacThuc);
+				kh.setThoiGianXacThuc(thoiGianXacThuc);
+				kh.setTrangThaiXacThuc(trangThaiXacThuc);
 
 				if (khachHangDAO.updateAuthentication(kh) > 0) {
 					SendGmail.Send("Gửi mã xác thực", getNoiDung(kh), kh.getEmail());
@@ -347,8 +347,8 @@ public class KhachHangController extends HttpServlet {
 		System.out.println(khachHang.toString());
 		if (khachHang != null) {
 			// Kiem tra ma xac thuc
-			if (khachHang.getMaxacthuc().equals(maxacthuc)) {
-				khachHang.setTrangthaixacthuc(true);
+			if (khachHang.getMaXacThuc().equals(maxacthuc)) {
+				khachHang.setTrangThaiXacThuc(true);
 				KhachHangDAO.getInstance().updateAuthentication(khachHang);
 				msg = "Xác thực thành công";
 			} else {
@@ -369,10 +369,10 @@ public class KhachHangController extends HttpServlet {
 	}
 
 	public static String getNoiDung(KhachHang kh) {
-		String link = "http://localhost:8080/Bai4_Bootstrap/khachhangcontroller?action=xacthuc&maxacthuc="
-				+ kh.getMaxacthuc() + "&makhachhang=" + kh.getMaKhachHang();
+		String link = "http://localhost:8080/StewieStore/khachhangcontroller?action=xacthuc&maxacthuc="
+				+ kh.getMaXacThuc() + "&makhachhang=" + kh.getMaKhachHang();
 		String noiDung = "<p>Chào bạn<b> " + kh.getHoVaTen() + "</b></p>\r\n" + "<p>Đây là mã xác thực của bạn <b>"
-				+ kh.getMaxacthuc() + "</b> hoặc bạn có thể click vào <a href=\"" + link
+				+ kh.getMaXacThuc() + "</b> hoặc bạn có thể click vào <a href=\"" + link
 				+ "\">link xác thực</a> để xác thực tài khoản của bạnx</p>";
 		return noiDung;
 	}

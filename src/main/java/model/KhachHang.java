@@ -2,7 +2,12 @@ package model;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class KhachHang {
+	@Id
 	private String maKhachHang;
 	private String tenDangNhap;
 	private String matKhau;
@@ -15,9 +20,9 @@ public class KhachHang {
 	private String email;
 	private Boolean dangKyEmail;
 	private String avatar;
-	private String maxacthuc;
-	private Date thoigianxacthuc;
-	private boolean trangthaixacthuc;
+	private String maXacThuc;
+	private Date thoiGianXacThuc;
+	private boolean trangThaiXacThuc;
 	
 	public KhachHang() {
 		super();
@@ -25,7 +30,7 @@ public class KhachHang {
 
 	public KhachHang(String maKhachHang, String tenDangNhap, String matKhau, String hoVaTen, String gioiTinh,
 			String diaChi, String diaChiNhanHang, Date ngaySinh, String soDienThoai, String email, Boolean dangKyEmail,
-			String avatar, String maxacthuc, Date thoigianxacthuc, boolean trangthaixacthuc) {
+			String avatar, String maXacThuc, Date thoiGianXacThuc, boolean trangThaiXacThuc) {
 		super();
 		this.maKhachHang = maKhachHang;
 		this.tenDangNhap = tenDangNhap;
@@ -39,9 +44,9 @@ public class KhachHang {
 		this.email = email;
 		this.dangKyEmail = dangKyEmail;
 		this.avatar = avatar;
-		this.maxacthuc = maxacthuc;
-		this.thoigianxacthuc = thoigianxacthuc;
-		this.trangthaixacthuc = trangthaixacthuc;
+		this.maXacThuc = maXacThuc;
+		this.thoiGianXacThuc = thoiGianXacThuc;
+		this.trangThaiXacThuc = trangThaiXacThuc;
 	}
 
 	/**
@@ -190,45 +195,45 @@ public class KhachHang {
 	}
 	
 	/**
-	 * @return the maxacthuc
+	 * @return the maXacThuc
 	 */
-	public String getMaxacthuc() {
-		return maxacthuc;
+	public String getMaXacThuc() {
+		return maXacThuc;
 	}
 
 	/**
-	 * @param maxacthuc the maxacthuc to set
+	 * @param maXacThuc the maXacThuc to set
 	 */
-	public void setMaxacthuc(String maxacthuc) {
-		this.maxacthuc = maxacthuc;
+	public void setMaXacThuc(String maXacThuc) {
+		this.maXacThuc = maXacThuc;
 	}
 
 	/**
-	 * @return the thoigianxacthuc
+	 * @return the thoiGianXacThuc
 	 */
-	public Date getThoigianxacthuc() {
-		return thoigianxacthuc;
+	public Date getThoiGianXacThuc() {
+		return thoiGianXacThuc;
 	}
 
 	/**
-	 * @param thoigianxacthuc the thoigianxacthuc to set
+	 * @param thoiGianXacThuc the thoiGianXacThuc to set
 	 */
-	public void setThoigianxacthuc(Date thoigianxacthuc) {
-		this.thoigianxacthuc = thoigianxacthuc;
+	public void setThoiGianXacThuc(Date thoiGianXacThuc) {
+		this.thoiGianXacThuc = thoiGianXacThuc;
 	}
 
 	/**
-	 * @return the trangthaixacthuc
+	 * @return the trangThaiXacThuc
 	 */
-	public boolean isTrangthaixacthuc() {
-		return trangthaixacthuc;
+	public boolean isTrangThaiXacThuc() {
+		return trangThaiXacThuc;
 	}
 
 	/**
-	 * @param trangthaixacthuc the trangthaixacthuc to set
+	 * @param trangThaiXacThuc the trangThaiXacThuc to set
 	 */
-	public void setTrangthaixacthuc(boolean trangthaixacthuc) {
-		this.trangthaixacthuc = trangthaixacthuc;
+	public void setTrangThaiXacThuc(boolean trangThaiXacThuc) {
+		this.trangThaiXacThuc = trangThaiXacThuc;
 	}
 
 	@Override
@@ -236,8 +241,8 @@ public class KhachHang {
 		return "KhachHang [maKhachHang=" + maKhachHang + ", tenDangNhap=" + tenDangNhap + ", matKhau=" + matKhau
 				+ ", hoVaTen=" + hoVaTen + ", gioiTinh=" + gioiTinh + ", diaChi=" + diaChi + ", diaChiNhanHang="
 				+ diaChiNhanHang + ", ngaySinh=" + ngaySinh + ", soDienThoai=" + soDienThoai + ", email=" + email
-				+ ", dangKyEmail=" + dangKyEmail + ", avatar=" + avatar + ", maxacthuc=" + maxacthuc
-				+ ", thoigianxacthuc=" + thoigianxacthuc + ", trangthaixacthuc=" + trangthaixacthuc + "]";
+				+ ", dangKyEmail=" + dangKyEmail + ", avatar=" + avatar + ", maXacThuc=" + maXacThuc
+				+ ", thoiGianXacThuc=" + thoiGianXacThuc + ", trangThaiXacThuc=" + trangThaiXacThuc + "]";
 	}
 
 }

@@ -7,192 +7,81 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import database.JDBCUtil;
+import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+import database.HibernateUtil;
 import model.KhachHang;
 
 public class KhachHangDAO implements DAOinterface<KhachHang> {
 
 	public ArrayList<KhachHang> data = new ArrayList<>();
+
 	public static KhachHangDAO getInstance() {
 		return new KhachHangDAO();
 	}
+
 	@Override
 	public ArrayList<KhachHang> selectAll() {
-		ArrayList<KhachHang> ketQua = new ArrayList<KhachHang>();
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "SELECT * FROM khachhang";
-			PreparedStatement st = con.prepareStatement(sql);
-
-			// Bước 3: thực thi câu lệnh SQL
-			System.out.println(sql);
-			ResultSet rs = st.executeQuery();
-
-			// Bước 4:
-			while (rs.next()) {
-				String maKhacHang = rs.getString("makhachhang");
-				String tenDangNhap = rs.getString("tendangnhap");
-				String matKhau = rs.getString("matkhau");
-				String hoVaTen = rs.getString("hoten");
-				String gioiTinh = rs.getString("gioitinh");
-				String diaChi = rs.getString("diachi");
-				String diaChiNhanHang = rs.getString("diachinhanhang");
-				Date ngaySinh = rs.getDate("ngaysinh");
-				String soDienThoai = rs.getString("sodienthoai");
-				String email = rs.getString("email");
-				String avatar = rs.getString("avatar");
-				boolean dangKyNhanBangTin = rs.getBoolean("dangkinhanbangtin");
-				String maxacthuc = rs.getString("sodienthoai");
-				boolean trangthaixacthuc = rs.getBoolean("trangthaixacthuc");
-				Date thoigianxacthuc = rs.getDate("ngaysinh");
-				KhachHang kh = new KhachHang(maKhacHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, diaChi,
-						diaChiNhanHang, ngaySinh, soDienThoai, email, dangKyNhanBangTin, avatar,maxacthuc,thoigianxacthuc,trangthaixacthuc);
-				ketQua.add(kh);
+		ArrayList<KhachHang> results = new ArrayList<KhachHang>();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				// Bước 1: tạo kết nối đến CSDL
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				String hql = "from KhachHang";
+				Query query = session.createQuery(hql);
+				results = (ArrayList<KhachHang>) query.getResultList();
+				transaction.commit();
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		return results;
 
-		return ketQua;
 	}
 
 	@Override
 	public KhachHang selectById(KhachHang t) {
-		KhachHang ketQua = null;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "SELECT * FROM khachhang WHERE makhachhang=?";
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getMaKhachHang());
-
-			// Bước 3: thực thi câu lệnh SQL
-			System.out.println(sql);
-			ResultSet rs = st.executeQuery();
-
-			// Bước 4:
-			while (rs.next()) {
-				String maKhacHang = rs.getString("makhachhang");
-				String tenDangNhap = rs.getString("tendangnhap");
-				String matKhau = rs.getString("matkhau");
-				String hoVaTen = rs.getString("hoten");
-				String gioiTinh = rs.getString("gioitinh");
-				String diaChi = rs.getString("diachi");
-				String diaChiNhanHang = rs.getString("diachinhanhang");
-				Date ngaySinh = rs.getDate("ngaysinh");
-				String soDienThoai = rs.getString("sodienthoai");
-				String email = rs.getString("email");
-				String avatar = rs.getString("avatar");
-				boolean dangKyNhanBangTin = rs.getBoolean("dangkinhanbangtin");
-				String maxacthuc = rs.getString("maxacthuc");
-				boolean trangthaixacthuc = rs.getBoolean("trangthaixacthuc");
-				Date thoigianxacthuc = rs.getDate("ngaysinh");
-				ketQua = new KhachHang(maKhacHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, diaChi,
-						diaChiNhanHang, ngaySinh, soDienThoai, email, dangKyNhanBangTin, avatar,maxacthuc,thoigianxacthuc,trangthaixacthuc);
+		KhachHang result = null;
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				result = session.get(KhachHang.class, t.getMaKhachHang());
+				transaction.commit();
+				session.close();
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-
-		return ketQua;
+		return result;
 	}
-	public KhachHang selectByUserName(KhachHang t) {
-		KhachHang ketQua = null;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
 
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "SELECT * FROM khachhang WHERE tendangnhap=?";
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getTenDangNhap());
-
-			// Bước 3: thực thi câu lệnh SQL
-			System.out.println(sql);
-			ResultSet rs = st.executeQuery();
-
-			// Bước 4:
-			while (rs.next()) {
-				String maKhacHang = rs.getString("makhachhang");
-				String tenDangNhap = rs.getString("tendangnhap");
-				String matKhau = rs.getString("matkhau");
-				String hoVaTen = rs.getString("hoten");
-				String gioiTinh = rs.getString("gioitinh");
-				String diaChi = rs.getString("diachi");
-				String diaChiNhanHang = rs.getString("diachinhanhang");
-				Date ngaySinh = rs.getDate("ngaysinh");
-				String soDienThoai = rs.getString("sodienthoai");
-				String email = rs.getString("email");
-				String avatar = rs.getString("avatar");
-				boolean dangKyNhanBangTin = rs.getBoolean("dangkinhanbangtin");
-				String maxacthuc = rs.getString("maxacthuc");
-				boolean trangthaixacthuc = rs.getBoolean("trangthaixacthuc");
-				Date thoigianxacthuc = rs.getDate("ngaysinh");
-				ketQua = new KhachHang(maKhacHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, diaChi,
-						diaChiNhanHang, ngaySinh, soDienThoai, email, dangKyNhanBangTin, avatar,maxacthuc,thoigianxacthuc,trangthaixacthuc);
-			}
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return ketQua;
-	}
 	@Override
 	public int insert(KhachHang t) {
-		int ketQua = 0;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "INSERT INTO khachhang (makhachhang, tendangnhap, matkhau, hoten, gioitinh, diachi, diachinhanhang, ngaysinh, sodienthoai, email, dangkinhanbangtin) "
-					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getMaKhachHang());
-			st.setString(2, t.getTenDangNhap());
-			st.setString(3, t.getMatKhau());
-			st.setString(4, t.getHoVaTen());
-			st.setString(5, t.getGioiTinh());
-			st.setString(6, t.getDiaChi());
-			st.setString(7, t.getDiaChiNhanHang());
-			st.setDate(8, t.getNgaySinh());
-			st.setString(9, t.getSoDienThoai());
-			st.setString(10, t.getEmail());
-			st.setBoolean(11, t.getDangKyEmail());
-
-			// Bước 3: thực thi câu lệnh SQL
-			ketQua = st.executeUpdate();
-			System.out.println(sql);
-			// Bước 4:
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		int result = 0;
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				session.save(t);
+				transaction.commit();
+				session.close();
+				result = 1;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0;
+			}
 		}
-
-		return ketQua;
+		return result;
 	}
 
 	@Override
@@ -207,31 +96,19 @@ public class KhachHangDAO implements DAOinterface<KhachHang> {
 	@Override
 	public int delete(KhachHang t) {
 		int ketQua = 0;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "DELETE from khachhang " + " WHERE makhachhang=?";
-
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getMaKhachHang());
-
-			// Bước 3: thực thi câu lệnh SQL
-			System.out.println(sql);
-			ketQua = st.executeUpdate();
-
-			// Bước 4:
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				session.delete(t);
+				transaction.commit();
+				session.close();
+				ketQua = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
-
 		return ketQua;
 	}
 
@@ -247,247 +124,272 @@ public class KhachHangDAO implements DAOinterface<KhachHang> {
 	@Override
 	public int update(KhachHang t) {
 		int ketQua = 0;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "UPDATE khachhang " + " SET " + " tendangnhap=?" + ", matkhau=?" + ", hoten=?" + ", gioitinh=?"
-					+ ", diachi=?" + ", diachinhanhang=?"  + ", ngaysinh=?" + ", sodienthoai=?"
-					+ ", email=?" + ", dangkinhanbangtin=?" + " WHERE makhachhang=?";
-
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getTenDangNhap());
-			st.setString(2, t.getMatKhau());
-			st.setString(3, t.getHoVaTen());
-			st.setString(4, t.getGioiTinh());
-			st.setString(5, t.getDiaChi());
-			st.setString(6, t.getDiaChiNhanHang());
-			st.setDate(7, t.getNgaySinh());
-			st.setString(8, t.getSoDienThoai());
-			st.setString(9, t.getEmail());
-			st.setBoolean(10, t.getDangKyEmail());
-			st.setString(11, t.getMaKhachHang());
-			// Bước 3: thực thi câu lệnh SQL
-
-			System.out.println(sql);
-			ketQua = st.executeUpdate();
-
-			// Bước 4:
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return ketQua;
-	}
-	
-	public boolean checkExistUserName(String username) {
-		boolean ketQua = false;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
-
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "SELECT * FROM khachhang WHERE tendangnhap=?";
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, username);
-
-			// Bước 3: thực thi câu lệnh SQL
-			ResultSet rs = st.executeQuery();
-
-			// Bước 4:
-			while (rs.next()) {
-				return true;
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				session.update(t);
+				transaction.commit();
+				session.close();
+				ketQua = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-
 		return ketQua;
 	}
-	public KhachHang selectByIdAndPassWord(KhachHang t) {
-		KhachHang ketQua = null;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
 
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "SELECT * FROM khachhang WHERE tendangnhap=? and matkhau=?  ";
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getTenDangNhap());
-			st.setString(2, t.getMatKhau());
-			
-			// Bước 3: thực thi câu lệnh SQL
-			ResultSet rs = st.executeQuery();
-
-			// Bước 4:
-			while (rs.next()) {
-				String maKhacHang = rs.getString("makhachhang");
-				String tenDangNhap = rs.getString("tendangnhap");
-				String matKhau = rs.getString("matkhau");
-				String hoVaTen = rs.getString("hoten");
-				String gioiTinh = rs.getString("gioitinh");
-				String diaChi = rs.getString("diachi");
-				String diaChiNhanHang = rs.getString("diachinhanhang");
-				Date ngaySinh = rs.getDate("ngaysinh");
-				String soDienThoai = rs.getString("sodienthoai");
-				String email = rs.getString("email");
-				String avatar = rs.getString("avatar");
-				boolean dangKyNhanBangTin = rs.getBoolean("dangkinhanbangtin");
-				String maxacthuc = rs.getString("sodienthoai");
-				boolean trangthaixacthuc = rs.getBoolean("trangthaixacthuc");
-				Date thoigianxacthuc = rs.getDate("ngaysinh");
-				ketQua = new KhachHang(maKhacHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, diaChi,
-						diaChiNhanHang, ngaySinh, soDienThoai, email, dangKyNhanBangTin, avatar,maxacthuc,thoigianxacthuc,trangthaixacthuc);;
-			}
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return ketQua;
-	}
 	public boolean changePassWord(KhachHang t) {
 		int ketQua = 0;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
+//		try {
+//			// Bước 1: tạo kết nối đến CSDL
+//			Connection con = JDBCUtil.getConnection();
+//
+//			// Bước 2: tạo ra đối tượng statement
+//			String sql = "UPDATE khachhang " + " SET " + "matkhau=? " + "WHERE makhachhang=?";
+//
+//			PreparedStatement st = con.prepareStatement(sql);
+//			st.setString(1, t.getMatKhau());
+//			st.setString(2, t.getMaKhachHang());
+//			// Bước 3: thực thi câu lệnh SQL
+//
+//			System.out.println(sql);
+//			ketQua = st.executeUpdate();
+//			// Bước 4:
+//			System.out.println("Bạn đã thực thi: " + sql);
+//			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
+//
+//			// Bước 5:
+//			JDBCUtil.closeConnection(con);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				String hql = "update KhachHang set matKhau = :matKhau " + " where maKhachHang = :maKhachHang";
+				Query query = session.createQuery(hql);
 
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "UPDATE khachhang " + " SET " + "matkhau=? " + "WHERE makhachhang=?";
+				query.setParameter("matKhau", t.getMatKhau());
+				query.setParameter("maKhachHang", t.getMaKhachHang());
 
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getMatKhau());
-			st.setString(2, t.getMaKhachHang());
-			// Bước 3: thực thi câu lệnh SQL
-
-			System.out.println(sql);
-			ketQua = st.executeUpdate();
-			// Bước 4:
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				ketQua = query.executeUpdate();
+				transaction.commit();
+				session.close();
+				ketQua = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
-
-		return ketQua>0;
+		return ketQua > 0;
 	}
+
 	public int changeInfo(KhachHang t) {
 		int ketQua = 0;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
+//		try {
+//			// Bước 1: tạo kết nối đến CSDL
+//			Connection con = JDBCUtil.getConnection();
+//
+//			// Bước 2: tạo ra đối tượng statement
+//			String sql = "UPDATE khachhang " + " SET " + " hoten=?" + ", gioitinh=?" + ", diachi=?"
+//					+ ", diachinhanhang=?" + ", ngaysinh=?" + ", sodienthoai=?" + ", email=?" + ", dangkinhanbangtin=?"
+//					+ " WHERE makhachhang=?";
+//
+//			PreparedStatement st = con.prepareStatement(sql);
+//
+//			st.setString(1, t.getHoVaTen());
+//			st.setString(2, t.getGioiTinh());
+//			st.setString(3, t.getDiaChi());
+//			st.setString(4, t.getDiaChiNhanHang());
+//			st.setDate(5, t.getNgaySinh());
+//			st.setString(6, t.getSoDienThoai());
+//			st.setString(7, t.getEmail());
+//			st.setBoolean(8, t.getDangKyEmail());
+//			st.setString(9, t.getMaKhachHang());
+//			// Bước 3: thực thi câu lệnh SQL
+//			System.out.println("Bạn đã thực thi: " + sql);
+//			ketQua = st.executeUpdate();
+//
+//			// Bước 4:
+//			System.out.println("Bạn đã thực thi: " + sql);
+//			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
+//
+//			// Bước 5:
+//			JDBCUtil.closeConnection(con);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				String hql = "update KhachHang set hoVaTen = :hoVaTen, gioiTinh=:gioiTinh, diaChi=:diaChi, diaChiNhanHang=:diaChiNhanHang, ngaySinh=:ngaySinh, soDienThoai=:soDienThoai, email=:email, dangKyEmail=:dangKyEmail  "
+						+ " where maKhachHang = :maKhachHang";
+				Query query = session.createQuery(hql);
 
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "UPDATE khachhang " + " SET "  + " hoten=?" + ", gioitinh=?"
-					+ ", diachi=?" + ", diachinhanhang=?"  + ", ngaysinh=?" + ", sodienthoai=?"
-					+ ", email=?" + ", dangkinhanbangtin=?" + " WHERE makhachhang=?";
+				query.setParameter("hoVaTen", t.getHoVaTen());
+				query.setParameter("gioiTinh", t.getGioiTinh());
+				query.setParameter("diaChi", t.getDiaChi());
+				query.setParameter("diaChiNhanHang", t.getDiaChiNhanHang());
+				query.setParameter("ngaySinh", t.getNgaySinh());
+				query.setParameter("soDienThoai", t.getSoDienThoai());
+				query.setParameter("email", t.getEmail());
+				query.setParameter("dangKyEmail", t.getDangKyEmail());
+				query.setParameter("maKhachHang", t.getMaKhachHang());
 
-			PreparedStatement st = con.prepareStatement(sql);
-		
-			st.setString(1, t.getHoVaTen());
-			st.setString(2, t.getGioiTinh());
-			st.setString(3, t.getDiaChi());
-			st.setString(4, t.getDiaChiNhanHang());
-			st.setDate(5,t.getNgaySinh());
-			st.setString(6, t.getSoDienThoai());
-			st.setString(7, t.getEmail());
-			st.setBoolean(8, t.getDangKyEmail());
-			st.setString(9, t.getMaKhachHang());
-			// Bước 3: thực thi câu lệnh SQL
-			System.out.println("Bạn đã thực thi: " + sql);
-			ketQua = st.executeUpdate();
-
-			// Bước 4:
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				ketQua = query.executeUpdate();
+				transaction.commit();
+				session.close();
+				ketQua = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
-
 		return ketQua;
 	}
+
 	public int updateAvatar(KhachHang t) {
 		int ketQua = 0;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
+//		try {
+//			// Bước 1: tạo kết nối đến CSDL
+//			Connection con = JDBCUtil.getConnection();
+//
+//			// Bước 2: tạo ra đối tượng statement
+//			String sql = "UPDATE khachhang " + " SET " + " avatar=?" + " WHERE makhachhang=?";
+//
+//			PreparedStatement st = con.prepareStatement(sql);
+//			st.setString(1, t.getAvatar());
+//			st.setString(2, t.getMaKhachHang());
+//			// Bước 3: thực thi câu lệnh SQL
+//			System.out.println("Bạn đã thực thi: " + sql);
+//			System.out.println(sql);
+//			ketQua = st.executeUpdate();
+//
+//			// Bước 4:
+//			System.out.println("Bạn đã thực thi: " + sql);
+//			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
+//
+//			// Bước 5:
+//			JDBCUtil.closeConnection(con);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				String hql = "update KhachHang set avatar = :avatar " + " where maKhachHang = :maKhachHang";
+				Query query = session.createQuery(hql);
 
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "UPDATE khachhang " + " SET " + " avatar=?" +  " WHERE makhachhang=?";
+				query.setParameter("avatar", t.getAvatar());
+				query.setParameter("maKhachHang", t.getMaKhachHang());
 
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getAvatar());
-			st.setString(2, t.getMaKhachHang());
-			// Bước 3: thực thi câu lệnh SQL
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println(sql);
-			ketQua = st.executeUpdate();
+				ketQua = query.executeUpdate();
+				transaction.commit();
+				session.close();
+				ketQua = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		return ketQua;
+	}
 
-			// Bước 4:
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
+	public int updateAuthentication(KhachHang t) {
+		int ketQua = 0;
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				String hql = "update KhachHang set maXacThuc = :maXacThuc, thoiGianXacThuc=:thoiGianXacThuc, trangThaiXacThuc=:trangThaiXacThuc  "
+						+ " where maKhachHang = :maKhachHang";
+				Query query = session.createQuery(hql);
+				query.setParameter("maXacThuc", t.getMaXacThuc());
+				query.setParameter("thoiGianXacThuc", t.getThoiGianXacThuc());
+				query.setParameter("trangThaiXacThuc", t.isTrangThaiXacThuc());
+				query.setParameter("maKhachHang", t.getMaKhachHang());
+				ketQua = query.executeUpdate();
+				transaction.commit();
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ketQua;
+	}
 
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public KhachHang selectByIdAndPassWord(KhachHang t) {
+		KhachHang ketQua = null;
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				String hql = "from KhachHang where tenDangNhap like :username and matKhau like :password";
+				Query query = session.createQuery(hql);
+				query.setParameter("username", t.getTenDangNhap());
+				query.setParameter("password", t.getMatKhau());
+				ketQua = (KhachHang) query.getSingleResult();
+				System.out.println(ketQua.toString());
+				transaction.commit();
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ketQua;
+	}
+
+	public KhachHang selectByUserName(KhachHang t) {
+		KhachHang ketQua = null;
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				String hql = "from KhachHang where tenDangNhap like :username";
+				Query query = session.createQuery(hql);
+				query.setParameter("username", t.getTenDangNhap());
+				ketQua = (KhachHang) query.getSingleResult();
+				transaction.commit();
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		return ketQua;
 	}
-	public int updateAuthentication(KhachHang t) {
-		int ketQua = 0;
-		try {
-			// Bước 1: tạo kết nối đến CSDL
-			Connection con = JDBCUtil.getConnection();
 
-			// Bước 2: tạo ra đối tượng statement
-			String sql = "UPDATE khachhang " + " SET " + " maxacthuc=?" + " , thoigianxacthuc=?" +" , trangthaixacthuc=?" + " WHERE makhachhang=?";
+	public boolean checkExistUserName(String username) {
+		boolean ketQua = false;
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		if (sessionFactory != null) {
+			try {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
 
-			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, t.getMaxacthuc());
-			st.setDate(2, t.getThoigianxacthuc());
-			st.setBoolean(3, t.isTrangthaixacthuc());
-			st.setString(4, t.getMaKhachHang());
-			// Bước 3: thực thi câu lệnh SQL
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println(sql);
-			ketQua = st.executeUpdate();
-
-			// Bước 4:
-			System.out.println("Bạn đã thực thi: " + sql);
-			System.out.println("Có " + ketQua + " dòng bị thay đổi!");
-
-			// Bước 5:
-			JDBCUtil.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				String hql = "from KhachHang where tenDangNhap like :username";
+				Query query = session.createQuery(hql);
+				query.setParameter("username", username);
+				ketQua = (query.getSingleResult() != null) ? true : false;
+				System.out.println(query.getSingleResult());
+				System.out.println("Kết quả check toàn tại " + ketQua);
+				transaction.commit();
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 		return ketQua;
 	}
 }

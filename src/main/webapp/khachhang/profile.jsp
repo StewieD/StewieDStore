@@ -68,7 +68,7 @@ String absolutePath = request.getScheme() + "://" + request.getServerName() + ":
 	dongYNhapEmail = (dongYNhapEmail.equals("null")) ? "" : dongYNhapEmail;
 	
 	String avatar = khachHang1.getAvatar() + "";
-	avatar = (avatar.equals("null")) ? "blankavatar.jpg" : avatar;
+	avatar = (avatar.length()==0) ? "blankavatar.jpg":avatar ;
 	%>
 
 	<div class="container">

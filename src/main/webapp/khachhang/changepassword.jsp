@@ -47,7 +47,7 @@ String absolutePath = request.getScheme() + "://" + request.getServerName() + ":
 			///disable submit-button etc 
 		}
 		if (document.forma.clock.value == "Time over") {
-			top.document.location.replace('../index.jsp'); //redirect page url
+			top.document.location.replace('index.jsp'); //redirect page url
 		}
 	}
 </script>
