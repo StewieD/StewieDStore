@@ -5,10 +5,10 @@
 <hibernate-configuration>
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
-		<property name="hibernate.connection.url">jdbc:mysql://awseb-e-p9yiybiz6w-stack-awsebrdsdatabase-hoce7comslzj.cnoz3b6cjahs.ap-northeast-1.rds.amazonaws.com:3306/hibernate_webbook</property>
+		<property name="hibernate.connection.url">jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_424bbdae90361d4</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.username">root</property>
-		<property name="hibernate.connection.password">Jh12121991</property>
+		<property name="hibernate.connection.username">bf5093975362c6</property>
+		<property name="hibernate.connection.password">76ff5163</property>
 		<!-- Show sql -->
 		<property name="show_sql">true</property>
 		<!-- drop and recreate database -->

@@ -2,7 +2,11 @@ package model;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+@Entity
 public class TacGia {
+	@Id
 	private String hoVaTen;
 	private String maTacGia;
 	private Date ngaySinh;

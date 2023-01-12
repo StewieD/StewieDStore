@@ -1,10 +1,10 @@
-<%@page import="DAO.TheLoaiDAO"%>
-<%@page import="model.TheLoai"%>
-<%@page import="model.TacGia"%>
-<%@page import="model.KhachHang"%>
+<%-- <%@page import="DAO.TheLoaiDAO"%> --%>
+<%-- <%@page import="model.TheLoai"%> --%>
+<%-- <%@page import="model.TacGia"%> --%>
+<%-- <%@page import="model.KhachHang"%> --%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="DAO.TacGiaDAO"%>
-<%@page import="DAO.SanPhamDAO"%>
+<%-- <%@page import="DAO.TacGiaDAO"%> --%>
+<%-- <%@page import="DAO.SanPhamDAO"%> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -31,6 +31,9 @@
 .red {
 	color: red;
 }
+.green{
+
+}
 </style>
 </head>
 <body>
@@ -39,9 +42,11 @@
 	<!-- End Navbar -->
 	<%
 	// lấy thông tin từ dât bảng tác giả & thể loại
-	ArrayList<TacGia> listTacGia = TacGiaDAO.getInstance().selectAll();
-	ArrayList<TheLoai> listTheLoai = TheLoaiDAO.getInstance().selectAll();
+// 	ArrayList<TacGia> listTacGia = TacGiaDAO.getInstance().selectAll();
+// 	ArrayList<TheLoai> listTheLoai = TheLoaiDAO.getInstance().selectAll();
 	//Lấy lại thông tin vừa submit
+	String success_msg = request.getAttribute("success_msg")+"";
+	success_msg = (success_msg.equals("null"))?"":success_msg;
 	String error = request.getAttribute("error")+"";
 	error = (error.equals("null"))?"":error;
 	String tenSanPham = request.getAttribute("tenSanPham")+"";
@@ -325,20 +330,21 @@
 		<form action="add-product">
 			<div class="row">
 				<h3 style="text-align: center">Thông Tin Sản Phẩm</h3>
+				<div class="bg-success text-white"><%=success_msg%></div>
 				<div class="col-md-6">
 					<div class="mb-1">
 						<label for="tenSanPham" class="form-label">Tên Sản Phẩm <span class="red">*</span> </label> <input
 							type="text" class="form-control" id="tenSanPham"
-							name="tenSanPham" placeholder="ex: Sản phẩm" value="<%=tenSanPham%>" required >
+							name="tenSanPham" placeholder="ex: Sản phẩm" value="<%=tenSanPham%>"  >
 					</div>
 					<div class="mb-1">
 						<label for="tacGia" class="form-label">Tác Giả</label> <select
 							id="tacGia" name="tacGia" class="form-select"
 							aria-label="Default select example">
 							<option <%=(maTacGia.equals("null"))?"selected":"" %>></option>
-							<%for (TacGia tacGia : listTacGia) {%>
-							<option value="<%=tacGia.getMaTacGia()%>" <%=(maTacGia.equals(tacGia.getMaTacGia()))?"selected":"" %>><%=tacGia.getHoVaTen()%></option>
-							<%}%>
+<%-- 							<%for (TacGia tacGia : listTacGia) {%> --%>
+<%-- 							<option value="<%=tacGia.getMaTacGia()%>" <%=(maTacGia.equals(tacGia.getMaTacGia()))?"selected":"" %>><%=tacGia.getHoVaTen()%></option> --%>
+<%-- 							<%}%> --%>
 						</select>
 					</div>
 					<div class="mb-1">
@@ -352,9 +358,9 @@
 							class="form-select" id="theLoai" name="theLoai"
 							aria-label="Default select example">
 							<option <%= (maTheLoai.equals("null")?"selected":"") %>></option>
-							<% for(TheLoai theLoai : listTheLoai){%>
-								<option value="<%=theLoai.getMaTheLoai()%>" <%=(maTheLoai.equals(theLoai.getMaTheLoai())?"selected":"") %>><%=theLoai.getTenTheLoai()%></option>
-							<%}%>
+<%-- 							<% for(TheLoai theLoai : listTheLoai){%> --%>
+<%-- 								<option value="<%=theLoai.getMaTheLoai()%>" <%=(maTheLoai.equals(theLoai.getMaTheLoai())?"selected":"") %>><%=theLoai.getTenTheLoai()%></option> --%>
+<%-- 							<%}%> --%>
 						</select>
 					</div>
 				</div>

@@ -9,6 +9,9 @@ public class HibernateUtil {
     static {
         Configuration cfg = new Configuration().configure();
         cfg.addAnnotatedClass(model.KhachHang.class);
+        cfg.addAnnotatedClass(model.SanPham.class);
+        cfg.addAnnotatedClass(model.TacGia.class);
+        cfg.addAnnotatedClass(model.TheLoai.class);
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                 .applySettings(cfg.getProperties());
         sessionFactory = cfg.buildSessionFactory(builder.build());

@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 public class KhachHang {
 	@Id
 	private String maKhachHang;
+	@Column(unique = true)
 	private String tenDangNhap;
 	private String matKhau;
 	private String hoVaTen;
@@ -17,6 +19,7 @@ public class KhachHang {
 	private String diaChiNhanHang;
 	private Date ngaySinh;
 	private String soDienThoai;
+	@Column(unique = true)
 	private String email;
 	private Boolean dangKyEmail;
 	private String avatar;

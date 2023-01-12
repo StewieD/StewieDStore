@@ -93,11 +93,11 @@ String absolutePath = request.getScheme() + "://" + request.getServerName() + ":
 					<h3 style="text-align: center;">Tài Khoản</h3>
 					<div class="mb-1">
 						<label for="username" class="form-label">User Name <span
-							class="red">*</span>
+							class="red">* <%=baoLoi%></span>
 						</label> <input type="text" class="form-control" id="username"
 							name="username" placeholder="Username" value="<%=username%>"
 							required>
-
+						<div class="red"></div>
 					</div>
 					<div class="mb-1">
 						<label for="" password" class="form-label">mật khẩu <span

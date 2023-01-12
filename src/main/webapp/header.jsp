@@ -6,8 +6,8 @@
    %>
 <nav class="navbar navbar-expand-lg">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="<%=absolutePath1%>/index.jsp"> <img src="<%=absolutePath1%>/img/Icon.png"
-				alt="Bootstrap" height="56">
+			<a class="navbar-brand" href="<%=absolutePath1%>/index.jsp"> <img src="<%=absolutePath1%>/img/COOL HWHIP (3).png"
+				alt="Bootstrap" height="80">
 			</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -32,7 +32,7 @@
 							<li><a class="dropdown-item" href="#">Nonfiction</a></li>
 							<li><a class="dropdown-item" href="#">Fiction</a></li>
 							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Classic books &
+							<li><a class="dropdown-item" href="#">Classic books and
 									Novels</a></li>
 						</ul></li>
 					<li class="nav-item"><a class="nav-link disabled">Hết hàng</a>
